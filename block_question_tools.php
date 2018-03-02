@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // This file is part of Moodle - http://moodle.org/
 //
@@ -31,63 +31,67 @@ class block_question_tools extends block_base {
     }
 
     function get_content() {
-		
+
 		$context = get_context_instance(CONTEXT_SYSTEM);
-	
+
 		if ( !isloggedin() || !has_capability('moodle/question:editall', $context) ) {
-			
+
 			$this->content = null;
-			
+
 		} else {
-		
+
 			global $PAGE, $CFG;
-			
+
 			if ($this->content !== NULL) {
 				return $this->content;
 			}
 
-			$this->content = new stdClass;		
-			
+			$this->content = new stdClass;
+
 			global $COURSE;
-			
+
 			//Search Questions Link
 			$url = new moodle_url('/blocks/question_tools/search_questions.php'); //, array('blockid' => $this->instance->id, 'courseid' => $COURSE->id));
 			$this->content->text = '<a href="'.$url.'">'.get_string('searchlink', 'block_question_tools').'</a><br />';
-		
+
 			//View by category
 			$url = new moodle_url('/blocks/question_tools/view_by_category.php');
 			$this->content->text .= '<a href="'.$url.'">'.get_string('viewbycategorylink', 'block_question_tools').'</a><br />';
-			
+
 			//Add / Edit References
 			$url = new moodle_url('/blocks/question_tools/references.php');
 			$this->content->text .= '<a href="'.$url.'">'.get_string('referenceslink', 'block_question_tools').'</a><br />';
-			
+
 			//Show Where used
 			$url = new moodle_url('/blocks/question_tools/show_where_used.php');
 			$this->content->text .= '<a href="'.$url.'">'.get_string('showwhereusedlink', 'block_question_tools').'</a><br />';
-            
-            //category report
-            $url = new moodle_url('/blocks/question_tools/category_report.php');
-            $this->content->text .= '<a href="'.$url.'">'.get_string('categoryreportlink', 'block_question_tools').'</a><br />';
-			
+
+      //category report
+      $url = new moodle_url('/blocks/question_tools/category_report.php');
+      $this->content->text .= '<a href="'.$url.'">'.get_string('categoryreportlink', 'block_question_tools').'</a><br />';
+
 			//Export XML
 			$url = new moodle_url('/blocks/question_tools/export_xml.php');
 			$this->content->text .= '<a href="'.$url.'">'.get_string('exportxmllink', 'block_question_tools').'</a><br />';
-			
+
+      //Export Pelesys CSV
+			$url = new moodle_url('/blocks/question_tools/export_pelesys_csv.php');
+			$this->content->text .= '<a href="'.$url.'">'.get_string('exportcsvlink', 'block_question_tools').'</a><br />';
+
 			//Images
 			$url = new moodle_url('/blocks/question_tools/images.php');
 			$this->content->text .= '<a href="'.$url.'">'.get_string('imageslink', 'block_question_tools').'</a><br />';
-			
+
 			//Information
 			$url = new moodle_url('/blocks/question_tools/information.php');
 			$this->content->text .= '<a href="'.$url.'">'.get_string('informationlink', 'block_question_tools').'</a><br />';
-			
-			
+
+
 		}
-		
+
 		return $this->content;
-		
+
     }
-    
+
 }
 ?>
