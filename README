@@ -1,0 +1,28 @@
+Question Tools 2.0 Jon Williams
+
+This block intends to give the user a few shortcuts in order to navigate quickly through every Moodle site. Besides it advices the user about unread messages and information about the last access to the LMS. It's already translated into spanish, english, portuguese and chinese. 
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details: http://www.gnu.org/copyleft/gpl.html
+
+
+Created by:
+
+* Jon Williams
+
+Installation:
+
+1- Place the question_tools folder (if you have downloaded zipped then you have to unzip 
+it) into the blocks folder under the root of your Moodle installation.
+2- Go to the notifications page and Moodle will automatically install this new
+block. 
+3- Turn Editing on and add the block "Question Tools". 
+4- That's it. Enjoy it!
+ 

@@ -1,0 +1,173 @@
+.qt_page_heading {
+	font-weight: bold;
+	font-size: 20px;
+	border-bottom: 2px solid #0051ba;
+	margin-bottom: 10px;
+}
+
+
+.qt_navigation {
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+
+.qt_nav_link {
+	padding: 10px;
+	border: 1px solid #333333;
+	background: #e2e2e2;
+	display: inline-block;
+}
+
+
+.qt_nav_link:hover {
+	background: #EB5B4D !important;
+}
+
+
+.qt_search_heading {
+	background: #e2e2e2;
+	font-weight: bold;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+
+.qt_table {
+	border-collapse: collapse;
+}
+
+
+.qt_table button {
+	margin: 0px !important;
+}
+
+
+.qt_table_data {
+	padding: 4px;
+}
+
+
+.qt_table_title {
+	font-weight: bold;
+	background: #e2e2e2;
+	padding: 10px;
+}
+
+
+.qt_table_heading {
+	font-weight: bold;
+	background: #e2e2e2;
+	padding: 10px;
+}
+
+
+.qt_table td {
+	border: 1px solid #333333;
+}
+
+
+.qt_table input {
+	margin: 0px !important;
+}
+
+
+#qt_output {
+	border: 2px solid #e2e2e2;
+	padding: 10px;
+}
+
+
+.qt_error {
+	margin: 20px;
+	padding: 10px;
+	font-size: 12px;
+	background: #f5dcec;
+	border: 2px solid #eb5b4d;
+}
+
+
+.qt_questions_found {
+	font-weight: bold;
+}
+
+
+.qt_question {
+	border: 2px solid #333333;
+	width: 100%;
+	margin-bottom: 20px;
+}
+
+.qt_question td {
+	padding: 8px;
+}
+
+
+.qt_question_heading {
+	background: #e2e2e2;
+}
+
+
+
+.qt_question_text {
+}
+
+
+
+.qt_hilite {
+	color: #df0000;
+	font-weight: bold;
+}
+
+
+
+.qt_tick {
+	font-weight: bold;
+	font-size: 14px;
+	color: #3fa535 !important;
+}
+
+
+.qt_question_buttons {
+	background: #e2e2e2;
+	padding: 4px;
+}
+
+
+.qt_question_buttons button {
+	margin: 0px;
+	margin-right: 4px;
+}
+
+
+.qt_info_heading {
+	font-size: 20px;
+	font-weight: bold;
+	color: #0051ba;
+	border-bottom: 2px solid #0051ba;
+	margin: 20px;
+}
+
+
+
+.qt_question_short {
+	border-collapse: collapse;
+	margin: 4px;
+	display: inline-block;
+	background: #e2e2e2;
+}
+
+
+.qt_question_short td {
+	border: 1px solid #333333;
+	padding: 4px;
+}
+
+
+.qt_question_short button {
+	margin: 1px !important;
+}
+
+
+
+
