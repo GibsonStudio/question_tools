@@ -58,7 +58,7 @@ if (isset($_POST['specific']))
     echo '<td>'.$q->id.'</td>';
     echo '<td>'.substr($q->name, 0, 50).'</td>';
     echo '<td>'.substr($categoryName, 0, 50).'</td>';
-    echo '<td>'.substr($q->questionText, 0, 50).'</td>';
+    echo '<td>'.substr($q->questiontext, 0, 50).'</td>';
     echo '</tr>';
 
   }
