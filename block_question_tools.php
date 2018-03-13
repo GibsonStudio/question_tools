@@ -78,6 +78,10 @@ class block_question_tools extends block_base {
 			$url = new moodle_url('/blocks/question_tools/export_pelesys_csv.php');
 			$this->content->text .= '<a href="'.$url.'">'.get_string('exportcsvlink', 'block_question_tools').'</a><br />';
 
+      //Questions In Quiz
+			$url = new moodle_url('/blocks/question_tools/questionsInQuiz.php');
+			$this->content->text .= '<a href="'.$url.'">Questions In Quiz</a><br />';
+
 			//Images
 			$url = new moodle_url('/blocks/question_tools/images.php');
 			$this->content->text .= '<a href="'.$url.'">'.get_string('imageslink', 'block_question_tools').'</a><br />';

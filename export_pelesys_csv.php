@@ -1,3 +1,16 @@
+<script>
+function saveCSV () {
+  var txt = $('#csvText').val();
+  var el = document.createElement('a');
+  el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(txt));
+  el.setAttribute('download', 'questions.csv');
+  el.style.display = 'none';
+  document.body.appendChild(el);
+  el.click();
+  document.body.removeChild(el);
+}
+</script>
+
 <?php
 
 require_once('../../config.php');
@@ -17,108 +30,76 @@ $editnode->make_active();
 echo $OUTPUT->header();
 
 echo qt_get_nav();
-$categoryid = isset($_POST['categoryid']) ? $_POST['categoryid'] : 0;
-//$questions_only = isset($_POST['questions_only']) ? true : false;
+$categoryId = isset($_POST['categoryid']) ? $_POST['categoryid'] : 0;
 
 echo '<div class="qt_page_heading">'.get_string('exportcsvheading', 'block_question_tools').'</div>';
 
 echo '<form action="" method="POST">';
-echo qt_get_category_select($categoryid);
-//echo '<br />Questions Only: <input type="checkbox" name="questions_only" ';
-//if ($questions_only) { echo ' checked '; }
-//echo '/><br />';
+echo qt_get_category_select($categoryId);
 echo '<input type="submit" name="submit" value="Export" />';
 echo '</form>';
 
 if (isset($_POST['submit']))
 {
 
+  echo '<button onclick="javascript:saveCSV();">Save CSV</button>';
+
 	echo '<hr />';
 
-	$categories = qt_get_child_categories($categoryid);
+	$categories = qt_get_child_categories($categoryId);
 
-	echo '<textarea style="width:98%;height: 500px;font-size:10px;">';
+	echo '<textarea id="csvText" style="width:98%;height: 500px;font-size:10px;">';
 
-  /*
-	if (!$questions_only)
-	{
-
-		echo "<QUESTIONS>\n\n";
-		echo "\t<CATEGORIES>\n";
-
-		foreach ($categories as $categoryid)
-		{
-			$category_name = trim($DB->get_field('question_categories', 'name', array('id'=>$categoryid)));
-			echo "\t\t".'<CATEGORY id="'.$categoryid.'">'.qt_cdata($category_name).'</CATEGORY>'."\n";
-		}
-
-
-		echo "\t</CATEGORIES>\n\n";
-
-		echo "\t<QUESTIONS>\n\n";
-
-	}
-  */
+  $choiceCount = 10;
 
   // add row 1 (field titles)
   echo 'SID,Topic Name,SubTopicName,Short Name,Reference,Question Title,Correct Answer,';
-  echo 'Choice 1,Choice 2,Choice 3,Choice 4,Choice 5,Choice 6,Choice 7,Choice 8,Choice 9,Choice 10,Feedback(Correct),Feedback(incorrect)';
+
+  // add field titles for Choices
+  for ($i = 1; $i <= $choiceCount; $i++) {
+    echo 'Choice '.$i;
+    if ($i < $choiceCount) { echo ','; }
+  }
+
+  // add feedback field titles?
+  //echo ',Feedback(Correct),Feedback(incorrect)';
+
+  // start new line - ready for question data
   echo "\n";
 
 
 
-	foreach ($categories as $categoryid)
+	foreach ($categories as $categoryId)
 	{
 
-    $categoryName = trim($DB->get_field('question_categories', 'name', array('id'=>$categoryid)));
-    $parentId = trim($DB->get_field('question_categories', 'parent', array('id'=>$categoryid)));
+    $categoryName = trim($DB->get_field('question_categories', 'name', array('id'=>$categoryId)));
+    $parentId = trim($DB->get_field('question_categories', 'parent', array('id'=>$categoryId)));
     $parentName = trim($DB->get_field('question_categories', 'name', array('id'=>$parentId)));
 
-		$questionids = qt_get_questions_in_category($categoryid);
+    // limit string lengths
+    $categoryName = substr($categoryName, 0, 35);
+    $parentName = substr($parentName,0, 35);
 
-		foreach ($questionids as $questionid)
+
+		$questionIds = qt_get_questions_in_category($categoryId);
+
+		foreach ($questionIds as $questionId)
 		{
 
-      /*
-			$question_name = $DB->get_field('question', 'name', array('id'=>$questionid));
-			$ref = explode(";", $question_name)[0];
+      $reference = qt_getQuestionRef($questionId);
+      $questionText = trim($DB->get_field('question', 'questiontext', array('id'=>$questionId)));
+      $shortName = substr($questionText, 0, 50);
 
-			echo "\t\t".'<QUESTION ref="'.qt_cdata($ref).'" categoryid="'.$categoryid.'">'."\n";
-
-			$questiontext = trim($DB->get_field('question', 'questiontext', array('id'=>$questionid)));
-
-			echo "\t\t\t".'<TEXT>'.qt_cdata($questiontext).'</TEXT>'."\n";
-			echo "\t\t\t"."<OPTIONS>\n";
-
-			$answer_options = qt_get_answer_options($questionid);
-
-			for ($i = 0; $i < count($answer_options); $i++)
-			{
-
-				$answer = trim($DB->get_field('question_answers', 'answer', array('id'=>$answer_options[$i])));
-				$fraction = $DB->get_field('question_answers', 'fraction', array('id'=>$answer_options[$i]));
-				$fraction = round($fraction, 2);
-
-				echo "\t\t\t\t".'<OPTION mark="'.$fraction.'">'.qt_cdata($answer).'</OPTION>'."\n";
-
-			}
-
-			echo "\t\t\t</OPTIONS>\n";
-
-			echo "\t\t</QUESTION>\n\n";
-
-      */
-
-      $questionText = trim($DB->get_field('question', 'questiontext', array('id'=>$questionid)));
-
-      echo $questionid.',';
-      echo $parentName.',';
-      echo $categoryName.',';
-      echo $questionText.',';
+      echo fixData($questionId).',';
+      echo fixData($parentName).',';
+      echo fixData($categoryName).',';
+      echo fixData($shortName).',';
+      echo fixData($reference).',';
+      echo fixData($questionText).',';
 
       // get answer options and correct answer
 
-      $answerOptions = qt_get_answer_options($questionid);
+      $answerOptions = qt_get_answer_options($questionId);
       $correctAnswer = 0;
       $answers = array();
 
@@ -131,13 +112,17 @@ if (isset($_POST['submit']))
 
       }
 
-      echo $correctAnswer.',';
+      echo fixData($correctAnswer).',';
 
-      foreach ($answers as $answer) {
-        echo $answer.',';
+      for ($i = 0; $i < count($answers); $i++) {
+        echo fixData($answers[$i]);
+        if ($i < count($answers) - 1) { echo ','; }
       }
 
-
+      // add extra commas?
+      for ($i = count($answers); $i < $choiceCount; $i++) {
+        echo ',';
+      }
 
       echo "\n";
 
