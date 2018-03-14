@@ -80,7 +80,7 @@ if (isset($_POST['specific']))
 		echo '<td>'.$q->id.'</td>';
 		echo '<td>'.substr($q->name, 0, 50).'</td>';
 		echo '<td>'.substr($categoryName, 0, 50).'</td>';
-		echo '<td>'.substr($q->questiontext, 0, 50).'</td>';
+		echo '<td>'.str_replace('<','&lt;',substr($q->questiontext, 0, 50)).'</td>';
 		echo '</tr>';
 	
 		$myCopyText .= $q->id."\t".trim(substr($q->name, 0, 50))."\t".trim(substr($categoryName, 0, 50))."\r\n";
