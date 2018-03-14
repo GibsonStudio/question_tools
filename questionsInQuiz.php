@@ -71,17 +71,21 @@ if (isset($_POST['specific']))
 
   foreach ($questions as $qId) {
 
-    $q = $DB->get_record('question', array('id'=>$qId));
-    $category = $DB->get_record('question_categories', array('id'=>$q->category));
-    $categoryName = $category->name;
-    echo '<tr>';
-    echo '<td>'.$q->id.'</td>';
-    echo '<td>'.substr($q->name, 0, 50).'</td>';
-    echo '<td>'.substr($categoryName, 0, 50).'</td>';
-    echo '<td>'.substr($q->questiontext, 0, 50).'</td>';
-    echo '</tr>';
-
-    $myCopyText .= $q->id."\t".substr($q->name, 0, 50)."\t".substr($categoryName, 0, 50)."\t".substr($q->questiontext, 0, 50)."\r\n";
+	if ($qId) {
+		
+		$q = $DB->get_record('question', array('id'=>$qId));
+		$category = $DB->get_record('question_categories', array('id'=>$q->category));
+		$categoryName = $category->name;
+		echo '<tr>';
+		echo '<td>'.$q->id.'</td>';
+		echo '<td>'.substr($q->name, 0, 50).'</td>';
+		echo '<td>'.substr($categoryName, 0, 50).'</td>';
+		echo '<td>'.substr($q->questiontext, 0, 50).'</td>';
+		echo '</tr>';
+	
+		$myCopyText .= $q->id."\t".trim(substr($q->name, 0, 50))."\t".trim(substr($categoryName, 0, 50))."\r\n";
+	}
+	
   }
 
   echo '</table>';
