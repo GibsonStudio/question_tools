@@ -1,7 +1,20 @@
 <style>
-.question-output { font-size: 12px; }
-.question-output td { padding: 2px 20px 2px 2px; }
+#question-output { font-size: 12px; }
+#question-output td { padding: 2px 20px 2px 2px; }
 </style>
+<script>
+function copyText ()
+{
+  var myText = document.getElementById('my-output');
+  myText.select();
+  var result = document.execCommand("copy")
+  if (result) {
+    console.log('text copied OK');
+  } else {
+    console.log('ERROR: Text not copied.');
+  }
+}
+</script>
 <?php
 
 require_once('../../config.php');
@@ -32,6 +45,13 @@ echo '<input type="submit" name="random" value="Run Random Report" />';
 echo '<input type="submit" name="specific" value="Run Specific Report" />';
 echo '</form>';
 
+if (isset($_POST['specific']) || isset($_POST['random'])) {
+  echo '<button onClick="copyText();">Copy Text</button>';
+}
+
+
+$myCopyText = "";
+
 if (isset($_POST['specific']))
 {
 
@@ -46,7 +66,7 @@ if (isset($_POST['specific']))
 
   $questions = explode(',', $quiz->questions);
 
-  echo '<table class="question-output">';
+  echo '<table id="question-output">';
   echo '<tr style="font-weight:bold;"><td>id</td><td>name</td><td>category</td><td>text</td></tr>';
 
   foreach ($questions as $qId) {
@@ -61,6 +81,7 @@ if (isset($_POST['specific']))
     echo '<td>'.substr($q->questiontext, 0, 50).'</td>';
     echo '</tr>';
 
+    $myCopyText .= $q->id."\t".substr($q->name, 0, 50)."\t".substr($categoryName, 0, 50)."\t".substr($q->questiontext, 0, 50)."\r\n";
   }
 
   echo '</table>';
@@ -90,7 +111,7 @@ if (isset($_POST['random'])) {
   $sql .= 'JOIN {question_categories} c ON q.category = c.id ';
   $sql .= 'WHERE FIND_IN_SET(q.id, ?) GROUP BY q.name';
 
-  echo '<table class="question-output">';
+  echo '<table id="question-output">';
   echo '<tr style="font-weight:bold;"><td>cat id</td><td>cat name</td><td>question count</td></tr>';
 
   $params = array($questions);
@@ -103,15 +124,21 @@ if (isset($_POST['random'])) {
     echo '<td>'.$r->cat_name.'</td>';
     echo '<td>'.$r->question_count.'</td>';
     echo '</tr>';
+    $myCopyText .= $r->id."\t".$r->cat_name."\t".$r->question_count."\r\n";
   }
 
   echo '</table>';
 
 
+
+
 }
 
 
-
+// area for clipboard text
+if (isset($_POST['specific']) || isset($_POST['random'])) {
+  echo '<textarea id="my-output" style="margin-top:60px; font-size:8px;">'.$myCopyText.'</textarea>';
+}
 
 
 
