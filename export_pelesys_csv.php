@@ -3,11 +3,11 @@
 #question-output td { padding: 2px 20px 2px 2px; }
 </style>
 <script>
-function saveCSV () {
-  var txt = $('#csvText').val();
+function saveTextAreaAsCSV (elID) {
+  var txt = $('#' + elID).val();
   var el = document.createElement('a');
   el.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(txt));
-  el.setAttribute('download', 'questions.csv');
+  el.setAttribute('download', elID + '.csv');
   el.style.display = 'none';
   document.body.appendChild(el);
   el.click();
@@ -46,13 +46,13 @@ echo '</form>';
 if (isset($_POST['submit']))
 {
 
-  echo '<button onclick="javascript:saveCSV();">Save CSV</button>';
+  echo '<button onclick="javascript:saveTextAreaAsCSV(\'csvQuestions\');">Save Questions CSV</button>';
 
 	echo '<hr />';
 
 	$categories = qt_get_child_categories($categoryId);
 
-	echo '<textarea id="csvText" style="width:98%;height: 300px;font-size:10px;">';
+	echo '<textarea id="csvQuestions" style="width:98%;height: 200px;font-size:10px;">';
 
   $choiceCount = 10;
   $imagesRequired = [];
@@ -152,21 +152,18 @@ if (isset($_POST['submit']))
   // images required?
   if (count($imagesRequired)) {
 
-    echo '<table id="question-output">';
-    echo '<tr style="font-weight:bold; color:#ffffff; background-color:#F9423A;"><td colspan="3">Images Required</td></tr>';
-    echo '<tr style="font-weight:bold;"><td>question id</td><td>question ref</td><td>image filename</td></tr>';
+      echo '<div style="font-weight:bold;font-size:20px;color:#FFFFFF;background-color:#F9423A;padding:4px;width:98%;">Images Required</div>';
+      echo '<button onclick="javascript:saveTextAreaAsCSV(\'csvImages\');">Save Image CSV</button>';
+      echo '<textarea id="csvImages" style="width:98%;height: 200px;font-size:10px;">';
+      echo "questionId, questionRef, imageFilename\n";
 
-    foreach ($imagesRequired as $image) {
+      foreach ($imagesRequired as $image) {
+        echo $image[0].',';
+        echo $image[1].',';
+        echo $image[2]."\n";
+      }
 
-      echo '<tr>';
-  		echo '<td>'.$image[0].'</td>';
-  		echo '<td>'.$image[1].'</td>';
-  		echo '<td>'.$image[2].'</td>';
-  		echo '</tr>';
-
-    }
-
-    echo '</table>';
+      echo '</textarea>';
 
   }
 
