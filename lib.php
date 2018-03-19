@@ -25,6 +25,38 @@ function fixData ($data)
 
 
 
+
+function qtGetImageNameFromText ($text = '')
+{
+
+  $imageExtensions = ['jpg', 'JPG', 'png', 'pdf'];
+
+  foreach ($imageExtensions as $imageExt) {
+
+    $endPos = strpos($text, $imageExt);
+
+    if ($endPos != false) {
+
+      $endPos += strlen($imageExt);
+      $startPos = $endPos;
+
+      for ($i = $endPos; $i >=0; $i--) {
+        if (substr($text, $i, 1) == '/') { $startPos = $i + 1; break; }
+      }
+
+      return substr($text, $startPos, $endPos - $startPos);
+
+    }
+
+  }
+
+  return '<<<ERROR>>>';
+
+}
+
+
+
+
 function qt_getQuestionRef ($questionId)
 {
 

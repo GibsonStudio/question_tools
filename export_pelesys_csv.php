@@ -1,3 +1,7 @@
+<style>
+#question-output { font-size: 12px; }
+#question-output td { padding: 2px 20px 2px 2px; }
+</style>
 <script>
 function saveCSV () {
   var txt = $('#csvText').val();
@@ -48,9 +52,10 @@ if (isset($_POST['submit']))
 
 	$categories = qt_get_child_categories($categoryId);
 
-	echo '<textarea id="csvText" style="width:98%;height: 500px;font-size:10px;">';
+	echo '<textarea id="csvText" style="width:98%;height: 300px;font-size:10px;">';
 
   $choiceCount = 10;
+  $imagesRequired = [];
 
   // add row 1 (field titles)
   echo 'SID,Topic Name,SubTopicName,Short Name,Reference,Question Title,Correct Answer,';
@@ -89,6 +94,13 @@ if (isset($_POST['submit']))
       $reference = qt_getQuestionRef($questionId);
       $questionText = trim($DB->get_field('question', 'questiontext', array('id'=>$questionId)));
       $shortName = substr($questionText, 0, 50);
+
+      // contains image?
+      if (strpos($questionText, 'media.caeoxfordinteractive') || strpos($questionText, 'PLUGINFILE')) {
+        $imageName = qtGetImageNameFromText($questionText);
+        $shortName = '***IMG***('.$imageName.')';
+        array_push($imagesRequired, [$questionId, $reference, $imageName]);
+      }
 
       echo fixData($questionId).',';
       echo fixData($parentName).',';
@@ -133,6 +145,33 @@ if (isset($_POST['submit']))
 
   // close text area
 	echo '</textarea>';
+
+
+
+
+  // images required?
+  if (count($imagesRequired)) {
+
+    echo '<table id="question-output">';
+    echo '<tr style="font-weight:bold; color:#ffffff; background-color:#F9423A;"><td colspan="3">Images Required</td></tr>';
+    echo '<tr style="font-weight:bold;"><td>question id</td><td>question ref</td><td>image filename</td></tr>';
+
+    foreach ($imagesRequired as $image) {
+
+      echo '<tr>';
+  		echo '<td>'.$image[0].'</td>';
+  		echo '<td>'.$image[1].'</td>';
+  		echo '<td>'.$image[2].'</td>';
+  		echo '</tr>';
+
+    }
+
+    echo '</table>';
+
+  }
+
+
+
 
 }
 
