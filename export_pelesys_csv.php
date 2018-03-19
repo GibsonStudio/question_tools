@@ -152,7 +152,7 @@ if (isset($_POST['submit']))
   // images required?
   if (count($imagesRequired)) {
 
-      echo '<div style="font-weight:bold;font-size:20px;color:#FFFFFF;background-color:#F9423A;padding:4px;width:98%;">Images Required</div>';
+      echo '<div style="font-weight:bold;font-size:20px;color:#FFFFFF;background-color:#F9423A;padding:4px;width:98%;">'.count($imagesRequired).' Images Required</div>';
       echo '<button onclick="javascript:saveTextAreaAsCSV(\'csvImages\');">Save Image CSV</button>';
       echo '<textarea id="csvImages" style="width:98%;height: 200px;font-size:10px;">';
       echo "questionId, questionRef, imageFilename\n";
